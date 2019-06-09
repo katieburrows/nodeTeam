@@ -2,6 +2,10 @@ var inquirer = require("inquirer");
 var starters = [];
 var subs = [];
 var playerArray = [];
+var offensiveStat;
+var defensiveStat;
+var score = 0;
+var counter = 0;
 
 function Player(name, position, offense, defense) {
     this.name = name;
@@ -89,7 +93,22 @@ var askQuestion = function() {
                 player.printStats();
             })
 
-
+        playGame();
     }
 
+}
+
+var playGame = function(roundNumber) {
+    var num1 = Math.floor((Math.random() * 20) + 1);
+    var num2 = Math.floor((Math.random() * 20) + 1);
+
+    if (num1 < offensiveStat) {
+        score++;
+        counter++;
+        
+    } 
+    if (num2 > defensiveStat) {
+        score--;
+        counter++
+    }
 }
