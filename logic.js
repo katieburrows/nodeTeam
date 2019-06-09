@@ -33,3 +33,63 @@ Player.prototype.badGame = function () {
 Player.prototype.printStats = function () {
     console.log(`Name: ${this.name}\nPosition: ${this.position}\nOffense: ${this.offense}\nDefense: ${this.defense}`);
 }
+
+var askQuestion = function() {
+    if (playerArray.length < 5) {
+        inquirer.prompt([
+            {
+                name: "name",
+                message: "What is the player's name?"
+            }, {
+                name: "position",
+                message: "What is this player's position?"
+            }, {
+                name: "offense",
+                message: "What is this player's offensive ranking (1-10)?",
+                validate: function(value){
+                    if(isNaN(value) === false && parseInt(value) > 0 && parseInt(value) <=10){
+                        return true;
+                    }
+                    return false;
+                }
+            }, {
+                name: "defense",
+                message: "What is this player's defensive ranking (1-10)",
+                validate: function(value){
+                    if(isNaN(value) === false && parseInt(value) > 0 && parseInt(value) <= 10){
+                        return true;
+                    }
+                    return false;
+                }
+            }
+
+        ]).then(function(answers){
+            var newPlayer = new Player(answers.name, answers.position, parseInt(answers.offense), parseInt(answers.defense));
+
+            if(starters.length < 3) {
+                starters.push(newPlayer);
+                console.log(`${newPlayer.name} was added to the starters`);
+            } else {
+                subs.push(newPlayer);
+                console.log(`${newPlayer.name} was added to the subs`);
+            }
+            
+            playerArray.push(newPlayer);
+            askQuestion();
+
+        });
+    } else {
+        console.log(`\n==Starters: ==============`);
+            starters.forEach(function(player){
+                player.printStats();
+            })
+        
+        console.log(`\n== Subs: ==============`);
+            subs.forEach(function(player){
+                player.printStats();
+            })
+
+
+    }
+
+}
