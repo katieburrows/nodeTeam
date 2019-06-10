@@ -98,6 +98,10 @@ var askQuestion = function() {
 
 }
 
+askQuestion();
+
+
+
 var playGame = function(roundNumber) {
     var num1 = Math.floor((Math.random() * 20) + 1);
     var num2 = Math.floor((Math.random() * 20) + 1);
