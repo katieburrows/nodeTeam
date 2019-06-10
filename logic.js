@@ -2,8 +2,8 @@ var inquirer = require("inquirer");
 var starters = [];
 var subs = [];
 var playerArray = [];
-var offensiveStat;
-var defensiveStat;
+var offensiveStat = 0;
+var defensiveStat = 0;
 var score = 0;
 var counter = 0;
 
@@ -69,10 +69,13 @@ var askQuestion = function() {
 
         ]).then(function(answers){
             var newPlayer = new Player(answers.name, answers.position, parseInt(answers.offense), parseInt(answers.defense));
-
+            
             if(starters.length < 3) {
                 starters.push(newPlayer);
                 console.log(`${newPlayer.name} was added to the starters`);
+                offensiveStat =+ answers.offense;
+                defensiveStat =+ answers.defense;
+                console.log(offensiveStat, defensiveStat);
             } else {
                 subs.push(newPlayer);
                 console.log(`${newPlayer.name} was added to the subs`);
