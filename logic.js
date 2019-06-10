@@ -105,8 +105,8 @@ askQuestion();
 
 
 var playGame = function(roundNumber) {
-    var num1 = Math.floor((Math.random() * 20) + 1);
-    var num2 = Math.floor((Math.random() * 20) + 1);
+    var opponentOffense = Math.floor((Math.random() * 20) + 1);
+    var opponentDefense = Math.floor((Math.random() * 20) + 1);
 
     var offensiveStat = 0;
     var defensiveStat = 0;
@@ -115,12 +115,63 @@ var playGame = function(roundNumber) {
         offensiveStat += player.offense;
         defensiveStat += player.defense; 
     })
+    
+    console.log(`\nOpponent offense: ${opponentOffense} Opponent defense: ${opponentDefense}`)
 
-    if (num1 < offensiveStat) {
-
+    if (opponentOffense > offensiveStat) {
+        score--;
+        console.log(`\nThe opposing team scored on you!`);
         
-    } 
-    if (num2 > defensiveStat) {
-
+    } else {
+        console.log(`\nYou blocked them!`);
     }
+
+    console.log(`\nYour current score is: ${score}\n`);
+    
+    // if (opponentOffense > defensiveStat) {
+    //     score--;
+    //     console.log(`\nThe opposing team scored on you!`);
+    // } else {
+    //     console.log(`\nYou blocked them!`);
+    // }
+    inquirer.prompt([
+        {
+            type: "confirm",
+            message: "Would you like to sub a player?",
+            name: "confirm"
+        }
+    ]).then(function(subAnswer){
+        if (subAnswer.confirm) {
+            inquirer.prompt([
+            {
+                type: "list",
+                message: "Which player would you like to sub out?",
+                choices: starters,
+                name: "subOut"
+            },
+            {
+                type: "list", 
+                message: "Which player would you like to sub in?",
+                choices: subs,
+                name: "subIn"
+            }
+            ]).then(function(subChoices){
+                var playerObject = starters.find(function(player) {
+                    return player.name === subChoices
+                })
+
+                var subObject = subs.find(function(player) {
+                    return player.name === subChoices.subIn
+                })
+
+                var playerSlot = starter.indexOf(playerObject);
+                var subSlot = subs.indexOf(subObject);
+
+                starters[playerSlot] = subObject;
+
+                subs[subSlot] = playerObject;
+                
+            }
+            )}
+    })
 }
