@@ -2,10 +2,10 @@ var inquirer = require("inquirer");
 var starters = [];
 var subs = [];
 var playerArray = [];
-var offensiveStat = 0;
-var defensiveStat = 0;
 var score = 0;
-var counter = 0;
+
+
+
 
 function Player(name, position, offense, defense) {
     this.name = name;
@@ -69,13 +69,12 @@ var askQuestion = function() {
 
         ]).then(function(answers){
             var newPlayer = new Player(answers.name, answers.position, parseInt(answers.offense), parseInt(answers.defense));
-            
+    
+            console.log(typeof(answers.offense), typeof(answers.defense));
             if(starters.length < 3) {
                 starters.push(newPlayer);
                 console.log(`${newPlayer.name} was added to the starters`);
-                offensiveStat =+ answers.offense;
-                defensiveStat =+ answers.defense;
-                console.log(offensiveStat, defensiveStat);
+
             } else {
                 subs.push(newPlayer);
                 console.log(`${newPlayer.name} was added to the subs`);
@@ -96,7 +95,7 @@ var askQuestion = function() {
                 player.printStats();
             })
 
-        playGame();
+        playGame(0);
     }
 
 }
@@ -109,13 +108,19 @@ var playGame = function(roundNumber) {
     var num1 = Math.floor((Math.random() * 20) + 1);
     var num2 = Math.floor((Math.random() * 20) + 1);
 
+    var offensiveStat = 0;
+    var defensiveStat = 0;
+
+    starters.forEach(function(player){
+        offensiveStat += player.offense;
+        defensiveStat += player.defense; 
+    })
+
     if (num1 < offensiveStat) {
-        score++;
-        counter++;
+
         
     } 
     if (num2 > defensiveStat) {
-        score--;
-        counter++
+
     }
 }
