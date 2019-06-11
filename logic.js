@@ -100,45 +100,48 @@ var askQuestion = function() {
 
 }
 
-askQuestion();
-
-
 
 var playGame = function(roundNumber) {
+    if (roundNumber < 5) {
+        roundNumber++;
+        console.log(`\n=== Round ${roundNumber}: ================`);
+    }
     var opponentOffense = Math.floor((Math.random() * 20) + 1);
     var opponentDefense = Math.floor((Math.random() * 20) + 1);
 
-    var offensiveStat = 0;
-    var defensiveStat = 0;
+    var teamOffense = 0;
+    var teamDefense = 0;
 
     starters.forEach(function(player){
-        offensiveStat += player.offense;
-        defensiveStat += player.defense; 
-    })
+        teamOffense += player.offense;
+        teamDefense += player.defense; 
+    });
     
-    console.log(`\nOpponent offense: ${opponentOffense} Opponent defense: ${opponentDefense}`)
+    console.log(`\nOpponent offense: ${opponentOffense} Opponent defense: ${opponentDefense}`);
 
-    if (opponentOffense > offensiveStat) {
-        score--;
-        console.log(`\nThe opposing team scored on you!`);
+    if (teamOffense > opponentDefense) {
+        score++;
+        console.log(`\nYou scored on the opposing team!`);
         
     } else {
-        console.log(`\nYou blocked them!`);
+        console.log(`\nThey blocked your score!`);
+    }
+
+    if (opponentOffense > teamDefense) {
+        score--;
+        console.log(`\nThe opposing team scored on you!`);
+    } else {
+        console.log(`\nYou blocked their score!`);
     }
 
     console.log(`\nYour current score is: ${score}\n`);
     
-    // if (opponentOffense > defensiveStat) {
-    //     score--;
-    //     console.log(`\nThe opposing team scored on you!`);
-    // } else {
-    //     console.log(`\nYou blocked them!`);
-    // }
     inquirer.prompt([
         {
             type: "confirm",
             message: "Would you like to sub a player?",
-            name: "confirm"
+            name: "confirm",
+            default: true
         }
     ]).then(function(subAnswer){
         if (subAnswer.confirm) {
@@ -158,11 +161,11 @@ var playGame = function(roundNumber) {
             ]).then(function(subChoices){
                 var playerObject = starters.find(function(player) {
                     return player.name === subChoices
-                })
+                });
 
                 var subObject = subs.find(function(player) {
                     return player.name === subChoices.subIn
-                })
+                });
 
                 var playerSlot = starter.indexOf(playerObject);
                 var subSlot = subs.indexOf(subObject);
@@ -170,8 +173,13 @@ var playGame = function(roundNumber) {
                 starters[playerSlot] = subObject;
 
                 subs[subSlot] = playerObject;
-                
-            }
-            )}
+
+                console.log(`Subbed out ${subChoices.subOut} and subbed in ${subChoices.subIn}.`);
+
+                playGame(roundNumber);
+            })
+
     })
 }
+
+askQuestion();
