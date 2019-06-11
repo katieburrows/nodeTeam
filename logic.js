@@ -143,8 +143,8 @@ var playGame = function(roundNumber) {
             name: "confirm",
             default: true
         }
-    ]).then(function(subAnswer){
-        if (subAnswer.confirm) {
+    ]).then(function(makeSubstitution) {
+        if (makeSubstitution.confirm) {
             inquirer.prompt([
             {
                 type: "list",
@@ -158,28 +158,66 @@ var playGame = function(roundNumber) {
                 choices: subs,
                 name: "subIn"
             }
-            ]).then(function(subChoices){
+            ]).then(function(subChoices) {
+                //grab and store the object of the player that is being subbed out.
                 var playerObject = starters.find(function(player) {
                     return player.name === subChoices
                 });
 
+                //grab and store the object of the player that is being subbed in.
                 var subObject = subs.find(function(player) {
                     return player.name === subChoices.subIn
                 });
 
+                //determine the index of each slot
                 var playerSlot = starter.indexOf(playerObject);
                 var subSlot = subs.indexOf(subObject);
 
+                //switch the two slots:  the sub moves into the starter slot.
                 starters[playerSlot] = subObject;
 
+                //the starter moves into the sub slot.
                 subs[subSlot] = playerObject;
 
                 console.log(`Subbed out ${subChoices.subOut} and subbed in ${subChoices.subIn}.`);
 
                 playGame(roundNumber);
             })
+        } else {
+            playGame(roundNumber);
+        }
+    })
+} else {
+    console.log(`\nYour final scorew was ${score}`);
+    if (score > 0) {
+        console.log(`\nYou won!`);
+        starters.forEach(function(player) {
+            player.goodGame();
+            player.printStats();
+        })
+    } else {
+        console.log(`\nYou lost!!!`);
+        starters.forEach(function(player) {
+            player.badGame();
+            player.printStats();
+        })
+    }
 
+    inquirer.prompt([
+        {
+            type: "confirm",
+            message: "Would you like ot play again?",
+            name: "confirm"
+        }
+    ]).then(function(playAgain) {
+        if (playAgain.confirm) {
+            playGame(0);
+        } else {
+            return false
+        }
     })
 }
+}
+
 
 askQuestion();
