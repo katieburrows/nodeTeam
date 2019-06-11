@@ -70,7 +70,6 @@ var askQuestion = function() {
         ]).then(function(answers){
             var newPlayer = new Player(answers.name, answers.position, parseInt(answers.offense), parseInt(answers.defense));
     
-            console.log(typeof(answers.offense), typeof(answers.defense));
             if(starters.length < 3) {
                 starters.push(newPlayer);
                 console.log(`${newPlayer.name} was added to the starters`);
