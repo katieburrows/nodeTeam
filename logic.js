@@ -105,14 +105,14 @@ var playGame = function(roundNumber) {
     if (roundNumber < 5) {
         roundNumber++;
         console.log(`\n=== Round ${roundNumber}: ================`);
-    }
+    
     var opponentOffense = Math.floor((Math.random() * 20) + 1);
     var opponentDefense = Math.floor((Math.random() * 20) + 1);
 
     var teamOffense = 0;
     var teamDefense = 0;
 
-    starters.forEach(function(player){
+    starters.forEach(function(player) {
         teamOffense += player.offense;
         teamDefense += player.defense; 
     });
@@ -170,7 +170,7 @@ var playGame = function(roundNumber) {
                 });
 
                 //determine the index of each slot
-                var playerSlot = starter.indexOf(playerObject);
+                var playerSlot = starters.indexOf(playerObject);
                 var subSlot = subs.indexOf(subObject);
 
                 //switch the two slots:  the sub moves into the starter slot.
@@ -186,7 +186,7 @@ var playGame = function(roundNumber) {
         } else {
             playGame(roundNumber);
         }
-    })
+    });
 } else {
     console.log(`\nYour final scorew was ${score}`);
     if (score > 0) {
