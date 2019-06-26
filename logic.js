@@ -29,22 +29,32 @@ Player.prototype.goodGame = function() {
     }
 };
 
+//Adding the badGame method to the prototype for the Player constructor to lesson the amount of times it has to be created compared to if it was defined in the constructor.
 Player.prototype.badGame = function () {
+    //Conditional to see if a randomly generated number is exactly equal to 0. 
+    //If the number is exactly equal to 0 then the offensive score decreases by 1.
     if(Math.floor(Math.random() * 2) === 0){
         this.offense--;
         console.log(`${this.name}'s offense has gone down!\n----------`);
-    } else {
+    } 
+    //If the number is not exactly equal to 0 then the defensive score decreases by 1.
+    else {
         this.defense--;
         console.log(`${this.name}'s defense has gone down!\n----------`)
     }
 }
 
+//Adding the printStats method to the prototype for the Player constructor to lesson the amount of times it has to be created compared to if it was defined in the constructor.
+//This method prints out an instance of the specified player's stats--name, position, offensive score, defensive score.
 Player.prototype.printStats = function () {
     console.log(`Name: ${this.name}\nPosition: ${this.position}\nOffense: ${this.offense}\nDefense: ${this.defense}`);
 }
 
+//Function that uses inquirer to kick off the game.
 var askQuestion = function() {
+    //Conditional to see if the playerArray is less than 5.  If it's less than 5 indexes long we want to keep adding players until we reach 5.
     if (playerArray.length < 5) {
+        //Standard inquirer syntax to get the information about a player.
         inquirer.prompt([
             {
                 name: "name",
@@ -55,6 +65,8 @@ var askQuestion = function() {
             }, {
                 name: "offense",
                 message: "What is this player's offensive ranking (1-10)?",
+
+                //Validation method from inquirer.  It's checking to make sure that the user has provided a number and that that number is between 1 and 10.  
                 validate: function(value){
                     if(isNaN(value) === false && parseInt(value) > 0 && parseInt(value) <=10){
                         return true;
@@ -64,6 +76,8 @@ var askQuestion = function() {
             }, {
                 name: "defense",
                 message: "What is this player's defensive ranking (1-10)",
+                
+                //Validation method from inquirer.  It's checking to make sure that the user has provided a number and that that number is between 1 and 10. 
                 validate: function(value){
                     if(isNaN(value) === false && parseInt(value) > 0 && parseInt(value) <= 10){
                         return true;
@@ -72,7 +86,9 @@ var askQuestion = function() {
                 }
             }
 
-        ]).then(function(answers){
+        ])
+        //Promise that runs once there are 5 players in the playerArray.  It threads through the responses from inquirer and creates a new instance from the Player constructor.
+        .then(function(answers){
             var newPlayer = new Player(answers.name, answers.position, parseInt(answers.offense), parseInt(answers.defense));
     
             if(starters.length < 3) {
