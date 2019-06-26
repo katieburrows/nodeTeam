@@ -1,24 +1,29 @@
+// ****Dependencies and global variables**** //
 var inquirer = require("inquirer");
 var starters = [];
 var subs = [];
 var playerArray = [];
 var score = 0;
 
-
-
-
+//Player constructor that expects a name, position, offensive score, and defensive score to be fed through when an instance is made.
 function Player(name, position, offense, defense) {
+    //setting name, position, offense, and defense to the object.
     this.name = name;
     this.position = position;
     this.offense = offense;
     this.defense = defense;
 }
 
+//Adding the goodGame method to the prototype for the Player constructor to lesson the amount of times it has to be created compared to if it was defined in the constructor. 
 Player.prototype.goodGame = function() {
+    //Conditional to see if a randomly generated number is exactly equal to 0. 
+    //If the number is exactly equal to 0 then the offensive score increases by 1.
     if(Math.floor(Math.random() * 2) === 0){
         this.offense++;
         console.log(`${this.name}'s offense has gone up\n------------`);
-    } else {
+    } 
+    //If the number is not exactly equal to 0 then the defensive score increases by 1.
+    else {
         this.defense++;
         console.log(`${this.name}'s defense has gone up!\n-----------`);
     }
