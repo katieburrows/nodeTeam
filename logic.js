@@ -231,15 +231,23 @@ var playGame = function(roundNumber) {
             playGame(roundNumber);
         }
     });
-} else {
+} 
+
+//If there have been 5 rounds then the game is over and the stats are printed out to the console.
+else {
     console.log(`\nYour final scorew was ${score}`);
+    
+    //If the player won (having a score above 0) then each player in the starters' array has the goodGame method called (which increases the offensvie stat for every player in the starters' array by one).
     if (score > 0) {
         console.log(`\nYou won!`);
         starters.forEach(function(player) {
             player.goodGame();
             player.printStats();
         })
-    } else {
+    } 
+    
+    //If the player lost then each player in the starters' array has the badGame method called (which decreases the offensive stat every player in the starters' array).
+    else {
         console.log(`\nYou lost!!!`);
         starters.forEach(function(player) {
             player.badGame();
@@ -247,6 +255,7 @@ var playGame = function(roundNumber) {
         })
     }
 
+    //Standard inquirer synatx asking the player if they want to play again, if so the playGame method is called with a 0 passed through to indicate it's the first round.
     inquirer.prompt([
         {
             type: "confirm",
@@ -263,5 +272,5 @@ var playGame = function(roundNumber) {
 }
 }
 
-
+//Kicks off the process to collect player information.
 askQuestion();
