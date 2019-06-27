@@ -114,15 +114,20 @@ var askQuestion = function() {
     //If there are 5 players in the playerArray we no longer need to kick off the previous function and we end our recursion.  
     else {
         console.log(`\n==Starters: ==============`);
+
+            //For each loop that prints out information for every player who is in the starters' array.
             starters.forEach(function(player){
                 player.printStats();
             })
         
         console.log(`\n== Subs: ==============`);
+            
+            //For each loop that prints out information for every player who is in the subs' array.
             subs.forEach(function(player){
                 player.printStats();
             })
-
+        
+        //calling the function that is the meat of the game portion.  Passing through a 0 to indicate this is the first round.
         playGame(0);
     }
 
@@ -130,16 +135,20 @@ var askQuestion = function() {
 
 
 var playGame = function(roundNumber) {
+
+    //If the rounds haven't exceeded 5 then increase the round number by 1.
     if (roundNumber < 5) {
         roundNumber++;
         console.log(`\n=== Round ${roundNumber}: ================`);
     
+    //2 randomly calculated numbers for the opponent's offensive and defensive stats.
     var opponentOffense = Math.floor((Math.random() * 20) + 1);
     var opponentDefense = Math.floor((Math.random() * 20) + 1);
 
     var teamOffense = 0;
     var teamDefense = 0;
 
+    //For each to loop through each starter and add their individual offensive and defensive stat to the team's totals for each.
     starters.forEach(function(player) {
         teamOffense += player.offense;
         teamDefense += player.defense; 
@@ -147,14 +156,16 @@ var playGame = function(roundNumber) {
     
     console.log(`\nOpponent offense: ${opponentOffense} Opponent defense: ${opponentDefense}`);
 
+    //Conditional to see if the player's team's offense is a larger number than the randomly generated defense number of the opponent.  If it is larger then the player scores a point, otherwise no score is made.
     if (teamOffense > opponentDefense) {
-        score++;
+        score++; 
         console.log(`\nYou scored on the opposing team!`);
         
     } else {
         console.log(`\nThey blocked your score!`);
     }
 
+    //Conditional to see if the randomly generated offensive score is a larger number than the player's team's.  If it is larger then the player loses a point, otherwise no deduction is taken from the player.
     if (opponentOffense > teamDefense) {
         score--;
         console.log(`\nThe opposing team scored on you!`);
