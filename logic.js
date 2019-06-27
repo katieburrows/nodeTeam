@@ -175,6 +175,7 @@ var playGame = function(roundNumber) {
 
     console.log(`\nYour current score is: ${score}\n`);
     
+    //Standard inquirer syntax to ask the user if they want to swap out players from the starters' array and the subs' array.
     inquirer.prompt([
         {
             type: "confirm",
@@ -183,6 +184,8 @@ var playGame = function(roundNumber) {
             default: true
         }
     ]).then(function(makeSubstitution) {
+
+        //If they do want to swap out players then the user is asked which player from the starters' array should go to the subs' array and which subs' array member should be moved to the starters' array.
         if (makeSubstitution.confirm) {
             inquirer.prompt([
             {
@@ -198,31 +201,33 @@ var playGame = function(roundNumber) {
                 name: "subIn"
             }
             ]).then(function(subChoices) {
-                //grab and store the object of the player that is being subbed out.
+                //Grabbing and storing the object of the player that is being subbed out.
                 var playerObject = starters.find(function(player) {
                     return player.name === subChoices
                 });
 
-                //grab and store the object of the player that is being subbed in.
+                //Grabbing and storing the object of the player that is being subbed in.
                 var subObject = subs.find(function(player) {
                     return player.name === subChoices.subIn
                 });
 
-                //determine the index of each slot
+                //Determining the index of each slot.
                 var playerSlot = starters.indexOf(playerObject);
                 var subSlot = subs.indexOf(subObject);
 
-                //switch the two slots:  the sub moves into the starter slot.
+                //Switching the two slots:  the sub moves into the starter slot.
                 starters[playerSlot] = subObject;
 
-                //the starter moves into the sub slot.
+                //And the starter moves into the sub slot.
                 subs[subSlot] = playerObject;
 
                 console.log(`Subbed out ${subChoices.subOut} and subbed in ${subChoices.subIn}.`);
 
+                //Kicking off the function with the incremented round number.
                 playGame(roundNumber);
             })
         } else {
+            //If no sub is made then the game is kicked off again with the incremented round number.
             playGame(roundNumber);
         }
     });
