@@ -91,20 +91,28 @@ var askQuestion = function() {
         .then(function(answers){
             var newPlayer = new Player(answers.name, answers.position, parseInt(answers.offense), parseInt(answers.defense));
     
+            //If the starters' array has less than 3 players add the new Player instance to the starters' array.
             if(starters.length < 3) {
                 starters.push(newPlayer);
                 console.log(`${newPlayer.name} was added to the starters`);
 
-            } else {
+            } 
+            //If the starter's array has 3 people then add the new Player instance to the subs' array.
+            else {
                 subs.push(newPlayer);
                 console.log(`${newPlayer.name} was added to the subs`);
             }
             
+            //Regardless if the new Player instance was added to the subs' or starters' arrays add them to the playerArray.
             playerArray.push(newPlayer);
+
+            //Recursively kick off function again
             askQuestion();
 
         });
-    } else {
+    } 
+    //If there are 5 players in the playerArray we no longer need to kick off the previous function and we end our recursion.  
+    else {
         console.log(`\n==Starters: ==============`);
             starters.forEach(function(player){
                 player.printStats();
